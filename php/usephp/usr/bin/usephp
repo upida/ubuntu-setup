@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e -o pipefail
+
+version=$1
+
+if [ -z "$version" ]; then
+	echo "version argument required"
+	exit 1
+fi
+
+sudo update-alternatives --set php /usr/bin/php$version
+
+sudo systemctl stop php*-fpm
+sudo systemctl start php$version-fpm
+
+libpath=/usr/lib/usephp
+PHP_VERSION=$version envsubst '$PHP_VERSION' < $libpath/php-location.tmpl | sudo tee /etc/nginx/snippets/php-fpm.conf >/dev/null
+sudo nginx -s reload

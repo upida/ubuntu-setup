@@ -1,0 +1,4 @@
+#!/bin/bash
+
+wget -O /tmp/hostctl.deb https://github.com/guumaster/hostctl/releases/download/v1.1.3/hostctl_1.1.3_linux_amd64.deb
+dpkg -i /tmp/hostctl.deb

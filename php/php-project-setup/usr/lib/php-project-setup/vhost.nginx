@@ -1,0 +1,14 @@
+server {
+    listen       80;
+    server_name  $VHOST;
+    
+    root   /usr/share/nginx/html/$WEBDIR/$WEBROOT;
+
+    access_log  /var/log/nginx/$VHOST.access.log  main;
+    error_log   /var/log/nginx/$VHOST.error.log;
+
+    index index.php  index.html index.htm;
+    
+    include snippets/php-fpm.conf;
+}
+

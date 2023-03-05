@@ -1,0 +1,23 @@
+#!/bin/bash
+
+domain=$1
+webdir=$2
+webroot=${3:-''}
+
+echo "webroot: $webroot"
+
+if [ -z "$domain" ]; then
+    echo "domain argument needed"
+    exit 1
+fi
+
+if [ -z "$webdir" ]; then
+    echo "webdir argument needed"
+    exit 1
+fi
+
+sudo hostctl add domains app $domain
+
+libpath=/usr/lib/php-project-setup
+VHOST=$domain WEBDIR=$webdir WEBROOT=$webroot envsubst '$VHOST,$WEBDIR,$WEBROOT' < $libpath/vhost.nginx | sudo tee /etc/nginx/conf.d/$domain.conf >/dev/null 
+sudo nginx -s reload
